@@ -35,6 +35,9 @@ jobs:
         echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
         echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
         echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+
+    # Decoding base64 key into file 
+    - run: echo "${{ secrets.KEY_STORE }}" | base64 --decode > upload-keystore.jks
         
     - uses: subosito/flutter-action@v2
       with:
@@ -43,15 +46,22 @@ jobs:
     - run: flutter test
     - run: flutter build apk
     - run: flutter build appbundle
-    
-  build-ios:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: subosito/flutter-action@v2
+
+    # Make appbundle downloadable
+    - name: Upload artefato
+      uses: actions/upload-artifact@v2
       with:
-        flutter-version: '2.10.4'
-        architecture: x64
-    - run: flutter pub get
-    - run: flutter test
-    - run: flutter build ios --release --no-codesign
+        name: appbundle
+        path: build/app/outputs/bundle/release
+    
+  # build-ios:
+  #   runs-on: macos-latest
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - uses: subosito/flutter-action@v2
+  #     with:
+  #       flutter-version: '2.10.4'
+  #       architecture: x64
+  #   - run: flutter pub get
+  #   - run: flutter test
+  #   - run: flutter build ios --release --no-codesign
