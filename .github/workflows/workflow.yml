@@ -37,7 +37,9 @@ jobs:
         echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
 
     # Decoding base64 key into file 
-    - run: echo "${{ secrets.KEY_STORE }}" | base64 --decode > upload-keystore.jks
+    - run: |
+        echo pwd
+        echo "${{ secrets.KEY_STORE }}" | base64 --decode > upload-keystore.jks
         
     - uses: subosito/flutter-action@v2
       with:
