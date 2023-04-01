@@ -12,6 +12,9 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+env:
+  PROPERTIES_PATH: "./android/key.properties"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,6 +29,13 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '11'
+    
+    # creating the key.properties file
+    - run: |
+        echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
+        echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
+        echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+        
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '2.10.4'
