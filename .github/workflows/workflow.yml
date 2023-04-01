@@ -34,7 +34,7 @@ jobs:
         distribution: 'zulu'
         java-version: '11'
     - name: Create key file
-      run: echo $KEY_STORE | base64 -di > upload-keystore.jks
+      run: echo $KEY_STORE | base64 -di > $KEY_PATH
         
     - uses: subosito/flutter-action@v2
       with:
