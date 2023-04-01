@@ -49,7 +49,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: appbundle
-        path: build/app/outputs/bundle/release/app-release.aab
+        path: build/app/outputs/bundle/release/app-release.apk
     
   # build-ios:
   #   runs-on: macos-latest
